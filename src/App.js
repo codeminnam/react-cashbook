@@ -1,25 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { createGlobalStyle } from 'styled-components';
+import CbTemplete from './components/CbTemplete';
+import CbHead from './components/CbHead';
+import CbCategory from './components/CbCategory';
+import CbCreate from './components/CbCreate';
+import CbList from './components/CbList';
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    background: #DFE2E6;
+    font-weight: 700;
+  }
+`;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalStyle />
+      <CbTemplete>
+        <CbHead />
+        <CbCategory />
+        <CbList />
+        <CbCreate />
+      </CbTemplete>
+    </>
   );
 }
 
