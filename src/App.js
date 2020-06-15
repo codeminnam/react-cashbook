@@ -5,8 +5,8 @@ import CbTemplete from './components/CbTemplete';
 import CbHead from './components/CbHead';
 import CbType from './components/CbType';
 import CbList from './components/CbList';
-import CbCreate from './components/CbCreate';
-
+import CbCreateButton from './components/CbCreateButton';
+import CbDialog from './components/CbDialog';
 const GlobalStyle = createGlobalStyle`
   body {
     background: #DFE2E6;
@@ -22,8 +22,9 @@ function App() {
         <CbHead />
         <CbType />
         <CbList />
-        <CbCreate />
+        <CbCreateButton />
       </CbTemplete>
+      <CbDialog />
     </CbProvider>
   );
 }

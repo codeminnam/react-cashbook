@@ -51,25 +51,26 @@ const CbDispatchContext = createContext();
 const CbNextIdContext = createContext();
 const CbTypeContext = createContext();
 const CbSetTypeContext = createContext();
-const CbEditContext = createContext();
-const CbSetEditContext = createContext();
+const CbModeContext = createContext();
+const CbSetModeContext = createContext();
 
 export function CbProvider({ children }) {
+    const nextId = useRef(5);
     const [state, dispatch] = useReducer(cbReducer, initialExpense);
     const [type, setType] = useState('all');
-    const [edit, setEdit] = useState({ mode: false, id: '0', type: '', text: '', price: 0 });
-    const nextId = useRef(5);
+    const [mode, setMode] = useState({ modeName: 'none', expense: { id: nextId.current, type: '', text: '', price: 0 } });
+
     return (
         <CbStateContext.Provider value={state}>
             <CbDispatchContext.Provider value={dispatch}>
                 <CbNextIdContext.Provider value={nextId}>
                     <CbTypeContext.Provider value={type}>
                         <CbSetTypeContext.Provider value={setType}>
-                            <CbEditContext.Provider value={edit}>
-                                <CbSetEditContext.Provider value={setEdit}>
+                            <CbModeContext.Provider value={mode}>
+                                <CbSetModeContext.Provider value={setMode}>
                                     {children}
-                                </CbSetEditContext.Provider>
-                            </CbEditContext.Provider>
+                                </CbSetModeContext.Provider>
+                            </CbModeContext.Provider>
                         </CbSetTypeContext.Provider>
                     </CbTypeContext.Provider>
                 </CbNextIdContext.Provider>
@@ -118,16 +119,16 @@ export function useCbSetType() {
     return context;
 }
 
-export function useCbEdit() {
-    const context = useContext(CbEditContext);
+export function useCbMode() {
+    const context = useContext(CbModeContext);
     if (!context) {
         throw new Error('Cannot find TodoProvider');
     }
     return context;
 }
 
-export function useCbSetEdit() {
-    const context = useContext(CbSetEditContext);
+export function useCbSetMode() {
+    const context = useContext(CbSetModeContext);
     if (!context) {
         throw new Error('Cannot find TodoProvider');
     }

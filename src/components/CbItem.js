@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useCbDispatch, useCbSetEdit } from '../CbContext';
+import { useCbSetMode } from '../CbContext';
 import { MdDelete } from 'react-icons/md';
 import { FaPen } from 'react-icons/fa';
 import { lighten } from 'polished';
@@ -90,20 +90,23 @@ const CbItemBlock = styled.div`
 `;
 
 function CbItem({ id, type, text, price }) {
-    const dispatch = useCbDispatch();
-    const setEdit = useCbSetEdit();
+    const setMode = useCbSetMode();
 
-    const onEdit = () => setEdit({
-        mode: true,
-        id,
-        type,
-        text,
-        price
+    const onEdit = () => setMode({
+        modeName: 'edit',
+        expense: {
+            id,
+            type,
+            text,
+            price
+        }
     });
 
-    const onRemove = () => dispatch({
-        type: 'REMOVE',
-        id
+    const onRemove = () => setMode({
+        modeName: 'remove',
+        expense: {
+            id
+        }
     });
 
     return (
