@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { MdAdd } from 'react-icons/md';
 import { FaCheck } from 'react-icons/fa';
 import { lighten, darken } from 'polished';
-import { useCbDispatch, useCbNextId } from '../CbContext';
+import { useCbDispatch, useCbNextId, useCbEdit, useCbSetEdit } from '../CbContext';
 
 const CircleButton = styled.button`
     background: #0C8499;
@@ -104,10 +104,27 @@ function CbCreate() {
     const [price, setPrice] = useState(0);
     const nextId = useCbNextId();
 
+    const edit = useCbEdit();
+    const { mode: editMode, id: editId, type: editTypeData, text: editTextData, price: editPriceData } = edit;
+    const [editType, setEditType] = useState(editTypeData);
+    const [editText, setEditText] = useState(editTextData);
+    const [editPrice, setEditPrice] = useState(editPriceData);
+    const setEdit = useCbSetEdit();
+
+    useEffect(() => {
+        setEditType(editTypeData);
+        setEditText(editTextData);
+        setEditPrice(editPriceData);
+    }, [editMode]);
+
     const onToggle = () => setOpen(!open);
     const onTypeChange = e => setType(e.target.value);
     const onTextChange = e => setText(e.target.value);
     const onPriceChange = e => setPrice(e.target.value);
+
+    const onEditTypeChange = e => setEditType(e.target.value);
+    const onEditTextChange = e => setEditText(e.target.value);
+    const onEditPriceChange = e => setEditPrice(e.target.value);
 
     const onSubmit = e => {
         e.preventDefault();
@@ -127,44 +144,126 @@ function CbCreate() {
         nextId.current += 1;
     }
 
-    const dispatch = useCbDispatch();
-    return (
-        <>
-            {open ?
-                (
-                    <InsertFormPositioner>
-                        <InsertForm onSubmit={onSubmit}>
-                            <Select
-                                onChange={onTypeChange}
-                            >
-                                <option value='--'>타입</option>
-                                <option value='식사'>식사</option>
-                                <option value='문화'>문화</option>
-                                <option value='통신'>통신</option>
-                                <option value='선물'>선물</option>
-                            </Select>
-                            <Input
-                                type='text'
-                                placeholder='지출내역'
-                                onChange={onTextChange}
-                            />
-                            <Input
-                                type='number'
-                                min='0'
-                                placeholder='지출비용'
-                                onChange={onPriceChange}
-                            />
-                            <Button><FaCheck /></Button>
-                        </InsertForm>
-                    </InsertFormPositioner>
-                ) : (
-                    <CircleButton open={open} onClick={onToggle}>
-                        <MdAdd />
-                    </CircleButton>
-                )
+    const onEdit = e => {
+        e.preventDefault();
+        dispatch({
+            type: 'EDIT',
+            expense: {
+                id: editId,
+                type: editType,
+                text: editText,
+                price: editPrice
             }
-        </>
-    );
+        });
+        setEdit({ ...edit, mode: false });
+    }
+
+    const dispatch = useCbDispatch();
+
+    if (open && !editMode) {
+        return (
+            <InsertFormPositioner>
+                <InsertForm onSubmit={onSubmit}>
+                    <Select
+                        onChange={onTypeChange}
+                    >
+                        <option value='--'>타입</option>
+                        <option value='식사'>식사</option>
+                        <option value='문화'>문화</option>
+                        <option value='통신'>통신</option>
+                        <option value='선물'>선물</option>
+                    </Select>
+                    <Input
+                        type='text'
+                        placeholder='지출내역'
+                        onChange={onTextChange}
+                    />
+                    <Input
+                        type='number'
+                        min='0'
+                        placeholder='지출비용'
+                        onChange={onPriceChange}
+                    />
+                    <Button><FaCheck /></Button>
+                </InsertForm>
+            </InsertFormPositioner>
+        );
+    } else if (editMode) {
+        return (
+            <InsertFormPositioner>
+                <InsertForm onSubmit={onEdit}>
+                    <Select
+                        onChange={onEditTypeChange}
+                        value={editType}
+                    >
+                        <option value='--'>타입</option>
+                        <option value='식사'>식사</option>
+                        <option value='문화'>문화</option>
+                        <option value='통신'>통신</option>
+                        <option value='선물'>선물</option>
+                    </Select>
+                    <Input
+                        type='text'
+                        placeholder='지출내역'
+                        value={editText}
+                        onChange={onEditTextChange}
+                    />
+                    <Input
+                        type='number'
+                        min='0'
+                        placeholder='지출비용'
+                        value={editPrice}
+                        onChange={onEditPriceChange}
+                    />
+                    <Button><FaCheck /></Button>
+                </InsertForm>
+            </InsertFormPositioner>
+        );
+    } else {
+        return (
+            <CircleButton open={open} onClick={onToggle}>
+                <MdAdd />
+            </CircleButton>
+        );
+    }
+
+    // return (
+    //     <>
+    //         {open ?
+    //             (
+    //                 <InsertFormPositioner>
+    //                     <InsertForm onSubmit={onSubmit}>
+    //                         <Select
+    //                             onChange={onTypeChange}
+    //                         >
+    //                             <option value='--'>타입</option>
+    //                             <option value='식사'>식사</option>
+    //                             <option value='문화'>문화</option>
+    //                             <option value='통신'>통신</option>
+    //                             <option value='선물'>선물</option>
+    //                         </Select>
+    //                         <Input
+    //                             type='text'
+    //                             placeholder='지출내역'
+    //                             onChange={onTextChange}
+    //                         />
+    //                         <Input
+    //                             type='number'
+    //                             min='0'
+    //                             placeholder='지출비용'
+    //                             onChange={onPriceChange}
+    //                         />
+    //                         <Button><FaCheck /></Button>
+    //                     </InsertForm>
+    //                 </InsertFormPositioner>
+    //             ) : (
+    //                 <CircleButton open={open} onClick={onToggle}>
+    //                     <MdAdd />
+    //                 </CircleButton>
+    //             )
+    //         }
+    //     </>
+    // );
 }
 
 export default CbCreate;

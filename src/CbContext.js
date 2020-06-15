@@ -32,8 +32,12 @@ function cbReducer(state, action) {
         case 'CREATE':
             return state.concat(action.expense);
         case 'EDIT':
-            return state.map(
-                expense => expense.id === action.id ? { ...expense, text: action.text } : expense
+            return state.map(expense => expense.id === action.expense.id ? {
+                ...expense,
+                type: action.expense.type,
+                text: action.expense.text,
+                price: action.expense.price
+            } : expense
             );
         case 'REMOVE':
             return state.filter(expense => expense.id !== action.id);
@@ -47,10 +51,13 @@ const CbDispatchContext = createContext();
 const CbNextIdContext = createContext();
 const CbTypeContext = createContext();
 const CbSetTypeContext = createContext();
+const CbEditContext = createContext();
+const CbSetEditContext = createContext();
 
 export function CbProvider({ children }) {
     const [state, dispatch] = useReducer(cbReducer, initialExpense);
     const [type, setType] = useState('all');
+    const [edit, setEdit] = useState({ mode: false, id: '0', type: '', text: '', price: 0 });
     const nextId = useRef(5);
     return (
         <CbStateContext.Provider value={state}>
@@ -58,7 +65,11 @@ export function CbProvider({ children }) {
                 <CbNextIdContext.Provider value={nextId}>
                     <CbTypeContext.Provider value={type}>
                         <CbSetTypeContext.Provider value={setType}>
-                            {children}
+                            <CbEditContext.Provider value={edit}>
+                                <CbSetEditContext.Provider value={setEdit}>
+                                    {children}
+                                </CbSetEditContext.Provider>
+                            </CbEditContext.Provider>
                         </CbSetTypeContext.Provider>
                     </CbTypeContext.Provider>
                 </CbNextIdContext.Provider>
@@ -99,9 +110,24 @@ export function useCbType() {
     return context;
 }
 
-
 export function useCbSetType() {
     const context = useContext(CbSetTypeContext);
+    if (!context) {
+        throw new Error('Cannot find TodoProvider');
+    }
+    return context;
+}
+
+export function useCbEdit() {
+    const context = useContext(CbEditContext);
+    if (!context) {
+        throw new Error('Cannot find TodoProvider');
+    }
+    return context;
+}
+
+export function useCbSetEdit() {
+    const context = useContext(CbSetEditContext);
     if (!context) {
         throw new Error('Cannot find TodoProvider');
     }

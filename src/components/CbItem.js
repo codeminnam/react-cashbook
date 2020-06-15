@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { MdDelete } from 'react-icons/md';
 import { FaPen } from 'react-icons/fa';
 import { lighten } from 'polished';
-import { useCbDispatch } from '../CbContext';
+import { useCbDispatch, useCbSetEdit } from '../CbContext';
 
 const handleTypeColor = type => {
     switch (type) {
@@ -89,11 +89,14 @@ const CbItemBlock = styled.div`
 
 function CbItem({ id, type, text, price }) {
     const dispatch = useCbDispatch();
+    const setEdit = useCbSetEdit();
 
-    const onEdit = () => dispatch({
-        type: 'EDIT',
+    const onEdit = () => setEdit({
+        mode: true,
         id,
-        text
+        type,
+        text,
+        price
     });
 
     const onRemove = () => dispatch({
