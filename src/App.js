@@ -2,9 +2,10 @@ import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import CbTemplete from './components/CbTemplete';
 import CbHead from './components/CbHead';
-import CbCategory from './components/CbCategory';
 import CbCreate from './components/CbCreate';
 import CbList from './components/CbList';
+import { CbProvider } from './CbContext';
+import CbType from './components/CbType';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -15,15 +16,15 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   return (
-    <>
+    <CbProvider>
       <GlobalStyle />
       <CbTemplete>
         <CbHead />
-        <CbCategory />
+        <CbType />
         <CbList />
         <CbCreate />
       </CbTemplete>
-    </>
+    </CbProvider>
   );
 }
 
