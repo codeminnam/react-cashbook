@@ -5,10 +5,11 @@ import { useCbSetType } from '../CbContext';
 const CbTypeBlock = styled.div`
     padding-top: 16px;
     padding-bottom: 16px;
-    text-align: right;
     border-bottom: 1px solid #AEB5BD;
     margin-bottom: 12px;
 
+    text-align: right;
+    
     span {
         margin: 0;
         font-size: 20px;
@@ -17,7 +18,6 @@ const CbTypeBlock = styled.div`
 
     select {
         padding: 5px;
-
         &:focus {
             outline: none;
         }

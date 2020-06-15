@@ -1,11 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useCbDispatch, useCbNextId, useCbEdit, useCbSetEdit } from '../CbContext';
 import { MdAdd } from 'react-icons/md';
 import { FaCheck } from 'react-icons/fa';
 import { lighten, darken } from 'polished';
-import { useCbDispatch, useCbNextId, useCbEdit, useCbSetEdit } from '../CbContext';
 
 const CircleButton = styled.button`
+    z-index: 5;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 70px;
+    height: 70px;
+    margin-bottom: 51px;
+    border: none;
+    border-radius: 50%;
+    outline: none;
+
+    position: absolute;
+    right: -20px;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+
+    font-size: 60px;
+    color: white;
+    cursor: pointer;
+
     background: #0C8499;
     &:hover {
         background: ${lighten(0.1, '#0C8499')};
@@ -14,47 +36,27 @@ const CircleButton = styled.button`
         background: ${darken(0.1, '#0c8499')};
     }
 
-    z-index: 5;
-    cursor: pointer;
-    width: 70px;
-    height: 70px;
-    display: block;
-    align-items: center;
-    justify-content: center;
-    font-size: 60px;
-
-    position: absolute;
-    right: -20px;
-    bottom: 0;
-    margin-bottom: 51px;
-    transform: translate(-50%, 50%);
-    color: white;
-    border-radius: 50%;
-    border: none;
-    outline: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
     transition: 0.125s all ease-in;
 `;
 
 const InsertFormPositioner = styled.div`
     width: 100%;
+    position: absolute;
     bottom: 0;
     left: 0;
-    position: absolute;
 `;
 
 const InsertForm = styled.form`
-    background: #f8f9fa;
-    padding: 32px;
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-    border-top: 1px solid #e9ecef;
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
+
+    padding: 32px;
+    border-top: 1px solid #e9ecef;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    
+    background: #f8f9fa;
 `;
 
 const Select = styled.select`
@@ -64,26 +66,28 @@ const Select = styled.select`
 `;
 
 const Input = styled.input`
-    padding: 12px;
-    border-radius: 4px;
-    border: 1px solid #dee2e6;
-    outline: none;
-    font-size: 18px;
     box-sizing: border-box;
     display: inline-block;
+
     width: 35%;
+    padding: 12px;  
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    outline: none;
+    font-size: 18px;
 `;
 
 const Button = styled.button`
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    border: none;
-    color: #FFF;
-    cursor: pointer;
-
     align-items: center;
     justify-content: center;
+    
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+
+    color: #FFF;
+    cursor: pointer;
 
     background: #0C8499;
     &:hover {
@@ -103,6 +107,7 @@ function CbCreate() {
     const [text, setText] = useState('');
     const [price, setPrice] = useState(0);
     const nextId = useCbNextId();
+    const dispatch = useCbDispatch();
 
     const edit = useCbEdit();
     const { mode: editMode, id: editId, type: editTypeData, text: editTextData, price: editPriceData } = edit;
@@ -157,8 +162,6 @@ function CbCreate() {
         });
         setEdit({ ...edit, mode: false });
     }
-
-    const dispatch = useCbDispatch();
 
     if (open && !editMode) {
         return (
@@ -226,44 +229,6 @@ function CbCreate() {
             </CircleButton>
         );
     }
-
-    // return (
-    //     <>
-    //         {open ?
-    //             (
-    //                 <InsertFormPositioner>
-    //                     <InsertForm onSubmit={onSubmit}>
-    //                         <Select
-    //                             onChange={onTypeChange}
-    //                         >
-    //                             <option value='--'>타입</option>
-    //                             <option value='식사'>식사</option>
-    //                             <option value='문화'>문화</option>
-    //                             <option value='통신'>통신</option>
-    //                             <option value='선물'>선물</option>
-    //                         </Select>
-    //                         <Input
-    //                             type='text'
-    //                             placeholder='지출내역'
-    //                             onChange={onTextChange}
-    //                         />
-    //                         <Input
-    //                             type='number'
-    //                             min='0'
-    //                             placeholder='지출비용'
-    //                             onChange={onPriceChange}
-    //                         />
-    //                         <Button><FaCheck /></Button>
-    //                     </InsertForm>
-    //                 </InsertFormPositioner>
-    //             ) : (
-    //                 <CircleButton open={open} onClick={onToggle}>
-    //                     <MdAdd />
-    //                 </CircleButton>
-    //             )
-    //         }
-    //     </>
-    // );
 }
 
 export default CbCreate;

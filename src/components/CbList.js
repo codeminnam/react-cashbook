@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import CbItem from './CbItem';
 import { useCbState, useCbType } from '../CbContext';
+import CbItem from './CbItem';
 
 const CbListBlock = styled.div`
     flex: 1;
-    padding-bottom: 48px;
     overflow-y: auto;
+    padding-bottom: 48px;
 `;
 
 function CbList() {

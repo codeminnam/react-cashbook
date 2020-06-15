@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useCbDispatch, useCbSetEdit } from '../CbContext';
 import { MdDelete } from 'react-icons/md';
 import { FaPen } from 'react-icons/fa';
 import { lighten } from 'polished';
-import { useCbDispatch, useCbSetEdit } from '../CbContext';
 
 const handleTypeColor = type => {
     switch (type) {
@@ -21,18 +21,18 @@ const handleTypeColor = type => {
 }
 
 const TypeTag = styled.div`
-    padding: 16px 20px;
-    font-size: 20px;
-    font-weight: 400;
-
-    background: ${({ type }) => handleTypeColor(type)};
-    border-radius: 8px;
-    
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 20px;
 
+    padding: 16px 20px;
+    margin-right: 20px;
+    border-radius: 8px;
+
+    font-size: 20px;
+    font-weight: 400;
+
+    background: ${({ type }) => handleTypeColor(type)};   
 `;
 
 const Text = styled.div`
@@ -42,21 +42,22 @@ const Text = styled.div`
 `;
 
 const Price = styled.div` 
-    font-size: 20px;
-    color: #E03231;
     margin-right: 20px;
+    font-size: 20px;
+    color: #E03231;  
 `;
 
 const Edit = styled.div`
-    opacity: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 12px;
+    
     color: #000;
     font-size: 24px;
-    margin-right: 12px;
     cursor: pointer;
-
+    
+    opacity: 1;
     &:hover {
         color: ${lighten(0.4, '#000')};
     }
@@ -64,15 +65,16 @@ const Edit = styled.div`
     transition: 0.125s all ease-in;
 `;
 
-const Remove = styled.div`
-    opacity: 1;
+const Remove = styled.div`  
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #000;
+
     font-size: 30px;
+    color: #000;
     cursor: pointer;
 
+    opacity: 1;
     &:hover {
         color: ${lighten(0.4, '#000')};
     }

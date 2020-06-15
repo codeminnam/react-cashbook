@@ -24,7 +24,9 @@ const CbHeadBlock = styled.div`
 
 function CbHead() {
     const cashbook = useCbState();
-    const sum = cashbook.map(expense => expense.price).reduce((acc, curr) => acc + parseInt(curr, 10), 0);
+    const sum = cashbook
+        .map(expense => expense.price)
+        .reduce((acc, curr) => acc + parseInt(curr, 10), 0);
     const today = new Date();
     const dateString = today.toLocaleDateString('ko-KR', {
         year: 'numeric',
