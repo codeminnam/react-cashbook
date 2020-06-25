@@ -158,9 +158,8 @@ const Button = styled.button`
 `;
 
 function CbDialog() {
-    const mode = useCbMode();
+    const { modeName, expense: { id: modeId, type: modeTypeData, text: modeTextData, price: modePriceData } } = useCbMode();
     const setMode = useCbSetMode();
-    const { modeName, expense: { id: modeId, type: modeTypeData, text: modeTextData, price: modePriceData } } = mode;
     const nextId = useCbNextId();
     const dispatch = useCbDispatch();
 
